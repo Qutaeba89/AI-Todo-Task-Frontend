@@ -25,6 +25,8 @@ export function connectTasks(onMessage: (taskJson: any) => void) {
             }
         });
     };
+    //Starta koppling 
     client.activate();
+    //Stäng av koppling när man är klar
     return () => client.deactivate();
 }
