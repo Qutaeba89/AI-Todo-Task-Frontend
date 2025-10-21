@@ -16,7 +16,7 @@ export default function TaskList({tasks, onReplace}: Props) {
                 const created = t.createdAt ? new Date(t.createdAt) : null; // Gör om datum-text till ett Date-objekt
                 const  createdLabel = 
                 // Kolla om datumet är giltigt
-                    created && isNaN(created.getTime())
+                    created && !isNaN(created.getTime())
                     // Visa datum i läsbar form
                     ? created.toLocaleString() : 'okänt';
 

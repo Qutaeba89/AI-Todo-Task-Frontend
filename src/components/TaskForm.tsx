@@ -19,7 +19,7 @@ export default function TaskForm() {
 
 async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
-
+    
     // Detta tillåt INTE
     // 1- Om title efter trim är tompt setMsg sen titleRef ska focus i input filt. 
     if(!titleClean) {

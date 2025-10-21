@@ -21,7 +21,7 @@ export async function fetchTasks(): Promise<Task[]> {
 export async function createTask(input: {title:string, description?:string}): Promise<Task> {
     const res = await fetch(`${API_BASE}/api/tasks`, {
         method: "POST",
-        headers: { "Content-Typ " : "application/json" },
+        headers: { "Content-Type" : "application/json" },
         body: JSON.stringify(input),
     });
     if(!res.ok) throw new Error("Kunde inte skapa uppgift");
@@ -32,10 +32,11 @@ export async function createTask(input: {title:string, description?:string}): Pr
 export async function simplifyText(text:string): Promise<string> {
     const res = await fetch(`${API_BASE}/api/ai/simplify`, {
         method:"POST",
-        headers: { "Content-Type " : "application/json" },
-        body: JSON.stringify(text),
+        headers: { "Content-Type" : "application/json" },
+        body: JSON.stringify({text}),
     });
     if(!res.ok) throw new Error("Kunde inte förenkla text");
     const data = await res.json();
+    console.log('[simplifyText] response:', data);
     return data.simplified as string;
 }
