@@ -1,5 +1,5 @@
 //Enkel klient för att anropa backend-API (REST).
-const API_BASE = import.meta.env.VITE_API_BASE as string; // läser API från backend som String
+const API_BASE = import.meta.env.VITE_API_BASE as string; // läser API från backend som String och visa React finns det i .env
 
 // Här för att kolla om det något är missad förexample (title) då vi få fel
 export type Task = {
