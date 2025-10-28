@@ -6,6 +6,7 @@ export default function TaskForm() {
     const [description, setDescription] = useState('')
     const [load, setLoad] = useState(false)
     const [msg, setMsg] = useState<string | null>(null)
+    // för pointing till input fält
     const titleRef = useRef<HTMLInputElement>(null)
     
     const titleClean = title.trim()
@@ -18,6 +19,7 @@ export default function TaskForm() {
 
 
 async function onSubmit(e: React.FormEvent) {
+  // ladda inte om sidan
     e.preventDefault()
     
     // Detta tillåt INTE
@@ -58,16 +60,16 @@ async function onSubmit(e: React.FormEvent) {
     } catch {
         setMsg("Kunde inte spara. Försök igen.")
     } finally {
-        // Load Inte sidan om något gick fel
+        // button ska vara olåst
         setLoad(false)
     }
 }
 
 return (
-    <form onSubmit={onSubmit} style={{ display: 'grid', gap: 8, marginBottom: 16, maxWidth: 420 }}>
+    <form onSubmit={onSubmit} style={{ display: 'grid', gap: 8, marginBottom: 16, maxWidth: 420, margin: '0 auto' }}>
       <h2>Lägg till uppgift</h2>
 
-      {/* statusrad */}
+      {/* statusrad  kolla om msg är tomt eller här Uppgift sparat sen set färg */}
       {msg && (
         <p aria-live="polite" style={{ margin: 0, color: msg.startsWith('Uppgift') ? 'green' : 'crimson' }}>
           {msg}
@@ -81,7 +83,6 @@ return (
           value={title}
           onChange={e => setTitle(e.target.value)}
           placeholder="Skriv titel..."
-          aria-invalid={!titleClean || titleTooShort}
         />
       </label>
 
@@ -93,11 +94,12 @@ return (
           placeholder="Skriv beskrivning..."
           rows={3}
         />
+        {/* small här kontrollera  description length*/}
         <small style={{ color: descTooLong ? 'crimson' : undefined }}>
           {description.length}/{descLimit}
         </small>
       </label>
-
+      {/* här disable button när load är true */}
       <button type="submit" disabled={load}>
         {load ? 'Sparar...' : 'Spara uppgift'}
       </button>
