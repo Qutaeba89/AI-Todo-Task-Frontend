@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { type Task, fetchTasks } from './api'
+import { type Task, fetchTasks, editTask } from './api'
 import { connectTasks } from './ws'
 import TaskForm from './components/TaskForm'
 import TaskList from './components/TaskList'
@@ -19,20 +19,52 @@ export default function App() {
     return () => { mounted = false }
   }, [])
 
-  // Realtidskoppling WebSocket/SSE för inkommande Task uppdateringar.
-  useEffect(() => {
-    const disconnect = connectTasks((incoming: Task) => {
-      setTasks(prev => { // Varje gång server skicka nya tasks
-        if (incoming.id == null) return prev  // Gör ingenting om id var null
-        const idx = prev.findIndex(t => t.id === incoming.id) 
-        if (idx === -1) return [incoming, ...prev] // Om taks finns inte i gammla lista lägg upp det först i listan
-        const copy = [...prev] // Om hittar task copy detta
-        copy[idx] = incoming // Byt gammla list med nya 
-        return copy // returnera ny lista
+  // Här alla som online se ändring i sidan i realtid 
+    useEffect(() => {
+    const disconnect = connectTasks((incoming: any) => {
+      setTasks(prev => {
+        // handle delete tombstone
+        if (incoming && typeof incoming === 'object' && 'deletedId' in incoming) {
+          return prev.filter(t => t.id !== incoming.deletedId)
+        }
+        // add/replace by id
+        if (!incoming || incoming.id == null) return prev
+        const idx = prev.findIndex(t => t.id === incoming.id)
+        // Här ny task om index inte -1
+        if (idx === -1) return [incoming as Task, ...prev]
+        // copia av current tasks list.
+        const copy = [...prev]
+        // lägg till nya tasks eller updatera task med nya list
+        copy[idx] = incoming as Task
+        return copy
       })
     })
-    return () => { void disconnect() } // clean när app avmonterats, och stäng connection
+    // Stäng connection när user stänger sidan eller lämnar
+    return () => { void disconnect() }
   }, [])
+  
+// handel ändring
+  async function handleEdit(t: Task, input: { title?: string; description?: string }) {
+  if (t.id == null) return;
+  const edited = await editTask(t.id, input);
+
+  // replace the task in local state
+  setTasks(prev => {
+    // hiitar här id som vi ska ändra om det finns
+    const idx = prev.findIndex(x => x.id === edited.id);
+    // om task finns inte retrurns gammla tasks list (sakerhet check). om det något fel kunde inte hitta id då stoppar ändra inte listan.
+    if (idx === -1) return prev;
+    // en copia av nuvarande tasks list innand ändring 
+    const copy = [...prev];
+    // nu ändra gammla tasks list med nya som har ändrats
+    copy[idx] = edited;
+    return copy;
+  });
+}
+// Här när jag är klar med en task ska vara längst ner 
+const sortedTasks = [...tasks].sort((a, b) => {
+  return (a.done ? 1 : 0) - (b.done ? 1 : 0);
+});
 
   return (
     <div style={{ maxWidth: 800, margin: '24px auto', padding: 12 }}>
@@ -52,7 +84,7 @@ export default function App() {
       <section>
         <h2>Lista</h2>
         <TaskList
-          tasks={tasks}
+          tasks={sortedTasks}
           onReplace={(updated) => {
             setTasks(prev => {
               if (updated.id == null) return prev
@@ -63,6 +95,10 @@ export default function App() {
               return copy
             })
           }}
+          onRemove={(id) => {
+            setTasks(prev => prev.filter(t => t.id !== id))
+          }}
+          onEdit={handleEdit}
         />
       </section>
     </div>
