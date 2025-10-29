@@ -67,7 +67,7 @@ const sortedTasks = [...tasks].sort((a, b) => {
 });
 
   return (
-    <div style={{ maxWidth: 800, margin: '24px auto', padding: 12 }}>
+    <div style={{ maxWidth: 800, margin: '24px auto', padding: 12,backgroundColor: 'rgba(28, 27, 30, 0.75)',backdropFilter: 'blur(10px)',borderRadius: '16px',border: '1px solid rgba(255, 255, 255, 0.1)' }}>
       <header style={{ marginBottom: 16 }}>
         <h1>Mina Uppgifter</h1>
         <p>Välkommen! Skriv ditt namn och börja lägga till uppgifter. Alla ser ändringarna direkt.</p>

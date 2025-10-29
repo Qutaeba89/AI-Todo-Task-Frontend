@@ -100,7 +100,7 @@ return (
         </small>
       </label>
       {/* här disable button när load är true */}
-      <button type="submit" disabled={load}>
+      <button type="submit" disabled={load} style={{ background: "#0693f1d0" }}>
         {load ? 'Sparar...' : 'Spara uppgift'}
       </button>
     </form>
