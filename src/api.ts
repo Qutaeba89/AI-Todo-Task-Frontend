@@ -63,7 +63,7 @@ export type Task = {
         input: Partial<{ title: string; description: string;}>
         ) {
         const res = await fetch(`${API_BASE}/api/tasks/${id}`, {
-            method: "PUT",
+            method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(input),
         });
