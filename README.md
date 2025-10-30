@@ -1,4 +1,4 @@
-# AI Chat Bot — Frontend (Vite + React + TypeScript)
+# AI Todo Task — Frontend (Vite + React + TypeScript)
 
 ## Overview
 Simple UI to manage **tasks** and to **simplify text with AI**.
@@ -37,7 +37,7 @@ VITE_WS_BASE=http://localhost:8080
 
 ## Install & run:
 ```bash
-cd AI-Chat-Bot-Frontend
+cd AI-Todo-Task-Frontend
 npm install
 npm run dev
 ```
@@ -55,7 +55,7 @@ Vite will print the local URL (commonly `http://localhost:5173`).
 
 ## Project Structure
 ```
-AI-Chat-Bot-Frontend/
+AI-Todo-Task-rontend/
   src/
     App.tsx
     api.ts              # REST client
