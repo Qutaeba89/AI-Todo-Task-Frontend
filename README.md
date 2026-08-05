@@ -1,5 +1,7 @@
 # AI Todo Task — Frontend
 
+[![CI](https://github.com/Qutaeba89/AI-Todo-Task-Frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/Qutaeba89/AI-Todo-Task-Frontend/actions/workflows/ci.yml)
+
 React + TypeScript + Vite frontend for a task manager with an AI-powered text simplifier.
 
 **Live:** http://77.81.6.76:3000 · **Backend:** [AI-Todo-Task-Backend](https://github.com/Qutaeba89/AI-Todo-Task-Backend)
