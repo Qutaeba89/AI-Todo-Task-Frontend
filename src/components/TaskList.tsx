@@ -13,13 +13,14 @@ type Props= {
     onRemove?: (id: number) => void;
 };
 export default function TaskList({tasks, onReplace, onRemove, onEdit}: Props) {
-  // om Task är tomt skicka ingenting bara msg
-    if(!tasks.length) return <p>Ingen uppgifter ännu</p>;
 // för att ändra task behöver jag de
   const [editId, setEditId] = useState<number | null>(null);
   const [form, setForm] = useState<{ title: string; description: string }>({ title: "", description: "" });
   const [saving, setSaving] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+
+  // om Task är tomt skicka ingenting bara msg (hooks above must run every render, so this stays after them)
+  if(!tasks.length) return <p>Ingen uppgifter ännu</p>;
 
   // Detta här uppdatera Klar checkBox , om id inte null och done inte false (Connection with API server in backend to receives data tasks)
   async function toggleDone(t: Task) {

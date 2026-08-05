@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { type Task, fetchTasks, editTask } from './api'
-import { connectTasks } from './ws'
+import { connectTasks, type TaskWsMessage } from './ws'
 import TaskForm from './components/TaskForm'
 import TaskList from './components/TaskList'
 import './App.css'
@@ -21,7 +21,7 @@ export default function App() {
 
   // Här alla som online se ändring i sidan i realtid 
     useEffect(() => {
-    const disconnect = connectTasks((incoming: any) => {
+    const disconnect = connectTasks((incoming: TaskWsMessage) => {
       setTasks(prev => {
         // handle delete tombstone
         if (incoming && typeof incoming === 'object' && 'deletedId' in incoming) {
